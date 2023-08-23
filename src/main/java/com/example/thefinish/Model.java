@@ -1,23 +1,39 @@
 package com.example.thefinish;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 public class Model {
-    static ObservableList<Node> nodeList;
-    ObservableList<Edge> edgeList;
+    static ObservableMap<Integer, Node> nodes;
+    static ObservableMap<Integer, Edge> edges;
     static void tmpVoid(){
-        nodeList = FXCollections.observableArrayList(new ArrayList<Node>())
-        Node node1 = new Node(1, "foo");
-        Node node2 = new Node(2, "bar");
-        Edge e = new Edge(1, "route", node1, node2);
-        System.out.println("OUTPUT:");
+        nodes = FXCollections.observableMap(new TreeMap<>());
+        addNode(1, "foo");
+        addNode(2, "bar");
+        addNode(3, "foo-bar");
+        edges = FXCollections.observableMap(new TreeMap<>());
+        addEdge(1, "Way", 1,2);
+        addEdge(2, "Way2", 2,3);
+        System.out.println("---------------OUTPUT:--------------");
+        Edge e = edges.get(1);
+        System.out.println("Edge " + e.getId() + " from: " +e.getFrom().getName() + " to: " + e.getTo().getName());
+        e = edges.get(2);
         System.out.println("Edge " + e.getId() + " from: " +e.getFrom().getName() + " to: " + e.getTo().getName());
     }
-    Node addNode(int id, String name){
+    static void addNode(int id, String name){
         Node node = new Node(id, name);
-        nodeList.add(id, node);
+        nodes.put(id, node);
+    }
+    static void addEdge(int id, String name, int fromId, int toId){
+        Edge edge = new Edge(id, name, nodes.get(Integer.valueOf(fromId)), nodes.get(Integer.valueOf(toId)));
+        edges.put(id, edge);
+    }
+
+    ArrayList<Edge> calculateRoute(int fromId, int toId){
+        ArrayList<Edge> = = new ArrayList<>();
+
     }
 }

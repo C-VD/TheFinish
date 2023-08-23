@@ -7,6 +7,7 @@ public class Edge {
     private SimpleIntegerProperty id;
     private SimpleStringProperty name;
 
+
     public Edge(int id, String name, Node from, Node to) {
         this.id = new SimpleIntegerProperty();
         this.name = new SimpleStringProperty();
