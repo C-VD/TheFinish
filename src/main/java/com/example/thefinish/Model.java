@@ -11,7 +11,7 @@ public class Model {
     static ObservableMap<Integer, Node> nodes;
     static ObservableMap<Integer, Edge> edges;
     static ObservableMap<Integer, PathToNode> paths;
-    static ArrayList<Node> unvisited;
+    static ArrayList<Edge> unvisited;
     static void tmpVoid(){
         nodes = FXCollections.observableMap(new TreeMap<>());
         addNode(0, "foo");
@@ -22,8 +22,8 @@ public class Model {
         edges.get(0).setWeight(6);
         addEdge(1, "Way2", 2,1);
         edges.get(1).setWeight(7);
-        addEdge(1, "Way3", 0,1);
-        edges.get(1).setWeight(100);
+        addEdge(2, "Way3", 0,1);
+        edges.get(2).setWeight(100);
         calculateRoute(0,1);
     }
     static void addNode(int id, String name){
@@ -42,8 +42,11 @@ public class Model {
         for (Integer n :
                 nodes.keySet()) {
             PathToNode path = new PathToNode(n);
-            unvisited.add(nodes.get(n));
             nNodes++;
+        }
+        for (int id :
+                edges.keySet()) {
+            unvisited.add(edges.get(id));
         }
         Edge[][] matrix = createMatrix(nNodes);
         PathToNode stub = new PathToNode(fromId);
@@ -86,12 +89,12 @@ public class Model {
             if (e == null) {
                 continue;
             }
-            System.out.println("E: " + e.getWeight());
+            System.out.println("ID: " + e.getId());
             neighbors.add(nodes.get(i));
             if(paths.containsKey(Integer.valueOf(i))) {
                 PathToNode p = paths.get(Integer.valueOf(i));
-                System.out.println("P: " + p.getCost() + "E: " + e.getWeight());
-                if (p.getCost() > e.getWeight()) {
+                System.out.println("P: " + p.getCost() + " E: " + e.getWeight());
+                if (p.getCost() > paths.get(id).getCost() + e.getWeight()) {
                     p.setCost(paths.get(id).getCost() + e.getWeight());
                 }
             }
@@ -101,12 +104,15 @@ public class Model {
                 p.getPath().clear();
                 p.getPath().add(e);
                 paths.put(i, p);
-                unvisited.remove(e);
             }
         }
-        for (int i = 0; i < neighbors.size(); i++) {
-            if (unvisited.contains(neighbors.get(i))){
-                getNeighbors(matrix, neighbors.get(i).getId());
+        for (int i = 0; i < unvisited.size(); i++) {
+            if (unvisited.get(i).getFrom().getId() == id){
+                System.out.println("Checking " + unvisited.get(i).getName());
+                System.out.println(" ID: " + id);
+
+                getNeighbors(matrix, unvisited.get(i).getTo().getId());
+                unvisited.remove(i);
             }
         }
         return neighbors;
