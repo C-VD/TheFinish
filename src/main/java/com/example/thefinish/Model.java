@@ -4,24 +4,27 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.TreeMap;
 
 public class Model {
     static ObservableMap<Integer, Node> nodes;
     static ObservableMap<Integer, Edge> edges;
+    static ObservableMap<Integer, PathToNode> paths;
+    static ArrayList<Node> unvisited;
     static void tmpVoid(){
         nodes = FXCollections.observableMap(new TreeMap<>());
-        addNode(1, "foo");
-        addNode(2, "bar");
-        addNode(3, "foo-bar");
+        addNode(0, "foo");
+        addNode(1, "bar");
+        addNode(2, "foo-bar");
         edges = FXCollections.observableMap(new TreeMap<>());
-        addEdge(1, "Way", 1,2);
-        addEdge(2, "Way2", 2,3);
-        System.out.println("---------------OUTPUT:--------------");
-        Edge e = edges.get(1);
-        System.out.println("Edge " + e.getId() + " from: " +e.getFrom().getName() + " to: " + e.getTo().getName());
-        e = edges.get(2);
-        System.out.println("Edge " + e.getId() + " from: " +e.getFrom().getName() + " to: " + e.getTo().getName());
+        addEdge(0, "Way", 0,2);
+        edges.get(0).setWeight(6);
+        addEdge(1, "Way2", 2,1);
+        edges.get(1).setWeight(7);
+        addEdge(1, "Way3", 0,1);
+        edges.get(1).setWeight(100);
+        calculateRoute(0,1);
     }
     static void addNode(int id, String name){
         Node node = new Node(id, name);
@@ -32,8 +35,80 @@ public class Model {
         edges.put(id, edge);
     }
 
-    ArrayList<Edge> calculateRoute(int fromId, int toId){
-        ArrayList<Edge> unvisited = new ArrayList<>();
-        return unvisited;
+    static ArrayList<Edge> calculateRoute(int fromId, int toId){
+        paths = FXCollections.observableMap(new TreeMap<>());
+        unvisited = new ArrayList<>();
+        int nNodes = 0;
+        for (Integer n :
+                nodes.keySet()) {
+            PathToNode path = new PathToNode(n);
+            unvisited.add(nodes.get(n));
+            nNodes++;
+        }
+        Edge[][] matrix = createMatrix(nNodes);
+        PathToNode stub = new PathToNode(fromId);
+        stub.setCost(0);
+        paths.put(fromId, stub);
+
+        ArrayList<Node> neighbors = getNeighbors(matrix, fromId);
+        System.out.println("------------TMP----------------");
+        for (Edge e : paths.get(1).getPath()) {
+            System.out.println("Name: " + e.getName() + " From: " + e.getFrom().getId() + " To: " + e.getTo().getId());
+        }
+        System.out.println("Cost: " + paths.get(1).getCost());
+
+        return null;
+    }
+
+    static Edge[][] createMatrix(int nNodes){
+        Edge[][] matrix = new Edge[nNodes][nNodes];
+        for (int edgeId :
+                edges.keySet()) {
+            Edge e = edges.get(edgeId);
+            Edge oldEdge = matrix[e.getFrom().getId()][e.getTo().getId()];
+            if (oldEdge != null) {
+                if (oldEdge.getWeight() > e.getWeight()){
+                    matrix[e.getFrom().getId()][e.getTo().getId()] = e;
+                }
+            }
+            else
+            {
+                matrix[e.getFrom().getId()][e.getTo().getId()] = e;
+            }
+        }
+        return matrix;
+    }
+
+    static ArrayList<Node> getNeighbors(Edge[][] matrix, int id){
+        ArrayList<Node> neighbors = new ArrayList<>();
+        for (int i = 0; i < matrix[id].length; i++) {
+            Edge e = matrix[id][i];
+            if (e == null) {
+                continue;
+            }
+            System.out.println("E: " + e.getWeight());
+            neighbors.add(nodes.get(i));
+            if(paths.containsKey(Integer.valueOf(i))) {
+                PathToNode p = paths.get(Integer.valueOf(i));
+                System.out.println("P: " + p.getCost() + "E: " + e.getWeight());
+                if (p.getCost() > e.getWeight()) {
+                    p.setCost(paths.get(id).getCost() + e.getWeight());
+                }
+            }
+            else {
+                PathToNode p = new PathToNode(Integer.valueOf(i));
+                p.setCost(paths.get(id).getCost() + e.getWeight());
+                p.getPath().clear();
+                p.getPath().add(e);
+                paths.put(i, p);
+                unvisited.remove(e);
+            }
+        }
+        for (int i = 0; i < neighbors.size(); i++) {
+            if (unvisited.contains(neighbors.get(i))){
+                getNeighbors(matrix, neighbors.get(i).getId());
+            }
+        }
+        return neighbors;
     }
 }

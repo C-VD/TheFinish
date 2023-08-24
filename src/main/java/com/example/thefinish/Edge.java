@@ -8,10 +8,22 @@ public class Edge {
     private SimpleStringProperty name;
     private SimpleIntegerProperty weight;
 
+    public int getWeight() {
+        return weight.get();
+    }
+
+    public SimpleIntegerProperty weightProperty() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight.set(weight);
+    }
 
     public Edge(int id, String name, Node from, Node to) {
         this.id = new SimpleIntegerProperty();
         this.name = new SimpleStringProperty();
+        this.weight = new SimpleIntegerProperty();
         this.id.set(id);
         this.name.set(name);
         this.from = from;
