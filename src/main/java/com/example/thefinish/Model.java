@@ -33,7 +33,7 @@ public class Model {
     }
 
     ArrayList<Edge> calculateRoute(int fromId, int toId){
-        ArrayList<Edge> = = new ArrayList<>();
-
+        ArrayList<Edge> unvisited = new ArrayList<>();
+        return unvisited;
     }
 }

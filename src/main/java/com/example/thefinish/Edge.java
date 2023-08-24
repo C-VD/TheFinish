@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 public class Edge {
     private SimpleIntegerProperty id;
     private SimpleStringProperty name;
+    private SimpleIntegerProperty weight;
 
 
     public Edge(int id, String name, Node from, Node to) {
