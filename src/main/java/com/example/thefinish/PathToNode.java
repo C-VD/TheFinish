@@ -20,12 +20,10 @@ public class PathToNode {
     }
 
     public int getCost() {
-        return cost;
+        int c = 0;
+        for (Edge e : path) {
+            c += e.getWeight();
+        };
+        return c;
     }
-
-    public void setCost(int cost) {
-        this.cost = cost;
-    }
-
-    private int cost;
 }

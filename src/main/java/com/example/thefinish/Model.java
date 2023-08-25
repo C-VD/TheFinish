@@ -50,7 +50,6 @@ public class Model {
         }
         Edge[][] matrix = createMatrix(nNodes);
         PathToNode stub = new PathToNode(fromId);
-        stub.setCost(0);
         paths.put(fromId, stub);
 
         ArrayList<Node> neighbors = getNeighbors(matrix, fromId);
@@ -96,7 +95,6 @@ public class Model {
                 PathToNode p = paths.get(Integer.valueOf(i));
                 System.out.println("P: " + p.getCost() + " E: " + e.getWeight());
                 if (p.getCost() > paths.get(id).getCost() + e.getWeight()) {
-                    p.setCost(paths.get(id).getCost() + e.getWeight());
                     ArrayList<Edge> newPath = paths.get(id).getPath();
                     newPath.add(e);
                     p.setPath(newPath);
@@ -104,7 +102,6 @@ public class Model {
             }
             else {
                 PathToNode p = new PathToNode(Integer.valueOf(i));
-                p.setCost(paths.get(id).getCost() + e.getWeight());
                 p.getPath().clear();
                 p.getPath().add(e);
                 paths.put(i, p);
