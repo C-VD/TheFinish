@@ -5,10 +5,14 @@ import javafx.scene.control.Label;
 
 public class HelloController {
     @FXML
-    private Label welcomeText;
+    private Label labOutput;
 
     @FXML
     protected void onCalculateAction() {
-        Model.tmpVoid();
+        PathToNode path = Model.tmpVoid();
+        for (Edge e : path.getPath()) {
+            labOutput.setText(labOutput.getText() + "Ребро: " + e.getName() + "\n");
+        }
+        labOutput.setText(labOutput.getText() + "Общая стоимость: "  + path.getCost() + "\n");
     }
 }

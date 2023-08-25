@@ -12,7 +12,7 @@ public class Model {
     static ObservableMap<Integer, Edge> edges;
     static ObservableMap<Integer, PathToNode> paths;
     static ArrayList<Edge> unvisited;
-    static void tmpVoid(){
+    static PathToNode tmpVoid(){
         nodes = FXCollections.observableMap(new TreeMap<>());
         addNode(0, "foo");
         addNode(1, "bar");
@@ -24,7 +24,7 @@ public class Model {
         edges.get(1).setWeight(7);
         addEdge(2, "Way3", 0,1);
         edges.get(2).setWeight(100);
-        calculateRoute(0,1);
+        return calculateRoute(0,1);
     }
     static void addNode(int id, String name){
         Node node = new Node(id, name);
@@ -35,7 +35,7 @@ public class Model {
         edges.put(id, edge);
     }
 
-    static ArrayList<Edge> calculateRoute(int fromId, int toId){
+    static PathToNode calculateRoute(int fromId, int toId){
         paths = FXCollections.observableMap(new TreeMap<>());
         unvisited = new ArrayList<>();
         int nNodes = 0;
@@ -61,7 +61,7 @@ public class Model {
         System.out.println("Cost: " + paths.get(1).getCost());
 
         PathToNode pathToNode = paths.get(toId);
-        return pathToNode.getPath();
+        return pathToNode;
     }
 
     static Edge[][] createMatrix(int nNodes){
