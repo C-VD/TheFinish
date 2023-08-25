@@ -10,7 +10,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="752.0" prefWidth="1075.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.thefinish.HelloController">
    <children>
       <TableView layoutX="558.0" layoutY="122.0" prefHeight="320.0" prefWidth="452.0" />
-      <TableView layoutX="84.0" layoutY="122.0" prefHeight="320.0" prefWidth="436.0" />
+      <TableView fx:id="tableNodes" layoutX="84.0" layoutY="122.0" prefHeight="320.0" prefWidth="436.0" />
       <Label layoutX="84.0" layoutY="72.0" prefHeight="39.0" prefWidth="436.0" text="Узлы">
          <font>
             <Font size="24.0" />

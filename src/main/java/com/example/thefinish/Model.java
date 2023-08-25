@@ -1,6 +1,7 @@
 package com.example.thefinish;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 
 import java.nio.file.Path;
@@ -10,6 +11,8 @@ import java.util.TreeMap;
 
 public class Model {
     static ObservableMap<Integer, Node> nodes;
+    static ObservableList<Node> nodesList;
+
     static ObservableMap<Integer, Edge> edges;
     static ObservableMap<Integer, PathToNode> paths;
     static ArrayList<Edge> unvisited;
@@ -36,6 +39,7 @@ public class Model {
         int id = nodes.size();
         Node node = new Node(id, name);
         nodes.put(id, node);
+        nodesList.add(node);
     }
     static void addEdge(int id, String name, int fromId, int toId){
         Edge edge = new Edge(id, name, nodes.get(Integer.valueOf(fromId)), nodes.get(Integer.valueOf(toId)));
@@ -136,5 +140,6 @@ public class Model {
 
     static void setup(){
         nodes = FXCollections.observableMap(new TreeMap<>());
+        nodesList = FXCollections.observableList(new ArrayList<>());
     }
 }
