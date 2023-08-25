@@ -16,6 +16,7 @@ public class HelloController {
     protected void onCalculateAction() {
         String from = txtPathFrom.getText();
         String to = txtPathTo.getText();
+        labOutput.setText("");
         PathToNode path = Model.tmpVoid(Integer.parseInt(from), Integer.parseInt(to));
         for (Edge e : path.getPath()) {
             labOutput.setText(labOutput.getText() + "Ребро: " + e.getName() + "\n");
