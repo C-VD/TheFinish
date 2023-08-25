@@ -3,8 +3,8 @@ package com.example.thefinish;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.TreeMap;
 
 public class Model {
@@ -60,7 +60,8 @@ public class Model {
         }
         System.out.println("Cost: " + paths.get(1).getCost());
 
-        return null;
+        PathToNode pathToNode = paths.get(toId);
+        return pathToNode.getPath();
     }
 
     static Edge[][] createMatrix(int nNodes){
@@ -96,6 +97,9 @@ public class Model {
                 System.out.println("P: " + p.getCost() + " E: " + e.getWeight());
                 if (p.getCost() > paths.get(id).getCost() + e.getWeight()) {
                     p.setCost(paths.get(id).getCost() + e.getWeight());
+                    ArrayList<Edge> newPath = paths.get(id).getPath();
+                    newPath.add(e);
+                    p.setPath(newPath);
                 }
             }
             else {
