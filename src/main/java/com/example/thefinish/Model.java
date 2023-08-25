@@ -4,9 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.TreeMap;
 
 public class Model {
@@ -18,10 +16,6 @@ public class Model {
     static ArrayList<Edge> unvisited;
 
     static PathToNode tmpVoid(int fromId, int toId) {
-        //nodes = FXCollections.observableMap(new TreeMap<>());
-        //addNode(0, "foo");
-        //addNode(1, "bar");
-        //addNode(2, "foo-bar");
         edges = FXCollections.observableMap(new TreeMap<>());
         addEdge(0, "Way", 0,2);
         edges.get(0).setWeight(6);
@@ -105,19 +99,14 @@ public class Model {
                     ArrayList<Edge> newPath = cloneList(paths.get(id).getPath());
                     newPath.add(e);
                     p.setPath(newPath);
-                    System.out.println("UPDATE PATH: " + i + " COST: " + p.getCost());
                 }
             }
             else {
-                System.out.println("NEW PATH: ID = " + i);
                 PathToNode p = new PathToNode(Integer.valueOf(i));
                 p.getPath().clear();
                 p.getPath().add(e);
                 paths.put(i, p);
-                System.out.println("COST: " + p.getCost());
             }
- //           System.out.println("PATH TO: " + 2 + " COST: " + paths.get(2).getCost());
-
         }
 
         for (int i = 0; i < unvisited.size(); i++) {
