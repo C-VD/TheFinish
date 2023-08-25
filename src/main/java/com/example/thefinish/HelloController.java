@@ -11,6 +11,8 @@ public class HelloController {
     private TextField txtPathFrom;
     @FXML
     private TextField txtPathTo;
+    @FXML
+    private TextField txtNewNodeName;
 
     @FXML
     protected void onCalculateAction() {
@@ -19,8 +21,16 @@ public class HelloController {
         labOutput.setText("");
         PathToNode path = Model.tmpVoid(Integer.parseInt(from), Integer.parseInt(to));
         for (Edge e : path.getPath()) {
-            labOutput.setText(labOutput.getText() + "Ребро: " + e.getName() + "\n");
+            labOutput.setText(labOutput.getText() + "Ребро: " + e.getName() + " до " + e.getTo().getName() + "\n");
         }
         labOutput.setText(labOutput.getText() + "Общая стоимость: "  + path.getCost() + "\n");
     }
+    @FXML
+    void onAddNodeBtnClick(){
+        Model.addNode(txtNewNodeName.getText());
+    }
+    public void initialize(){
+        Model.setup();
+    }
+
 }
