@@ -22,6 +22,18 @@ public class HelloController {
     private TextField txtNewNodeName;
     @FXML
     private TableView<Node> tableNodes;
+    @FXML
+    private TableView<Edge> tableEdges;
+
+    @FXML
+    private TextField txtNewEdgeName;
+    @FXML
+    private TextField txtNewEdgeFrom;
+
+    @FXML
+    private TextField txtNewEdgeTo;
+    @FXML
+    private TextField txtNewEdgeCost;
 
     @FXML
     protected void onCalculateAction() {
@@ -39,24 +51,56 @@ public class HelloController {
     void onAddNodeBtnClick() {
         Model.addNode(txtNewNodeName.getText());
     }
+    @FXML
+    void onAddEdgeBtnClick(){
+        Model.addEdge(
+                txtNewEdgeName.getText(),
+                Integer.parseInt(txtNewEdgeFrom.getText()),
+                Integer.parseInt(txtNewEdgeTo.getText())
+        );
+    }
 
     public void initialize() {
         Model.setup();
-        inittableNodes();
+        initTableNodes();
+        initTableEdges();
     }
 
-    void inittableNodes() {
+    void initTableNodes() {
         tableNodes.getColumns().clear();
         TableColumn<Node, Integer> columnId = new TableColumn<>("№");
         columnId.setCellValueFactory(new PropertyValueFactory<>("id"));
         columnId.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
 
-        TableColumn<Node, String> columnB = new TableColumn<>("Название");
-        columnB.setCellValueFactory(new PropertyValueFactory<>("name"));
+        TableColumn<Node, String> columnName = new TableColumn<>("Название");
+        columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
 
         tableNodes.getColumns().add(columnId);
-        tableNodes.getColumns().add(columnB);
+        tableNodes.getColumns().add(columnName);
         tableNodes.setItems(Model.nodesList);
+    }
+    void initTableEdges() {
+        tableEdges.getColumns().clear();
+        TableColumn<Edge, Integer> columnId = new TableColumn<>("№");
+        columnId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        columnId.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+
+        TableColumn<Edge, String> columnName = new TableColumn<>("Название");
+        columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        TableColumn<Edge, Integer> columnFrom = new TableColumn<>("From");
+        columnFrom.setCellValueFactory(new PropertyValueFactory<>("from"));
+        columnFrom.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+
+        TableColumn<Edge, Integer> columnTo = new TableColumn<>("To");
+        columnTo.setCellValueFactory(new PropertyValueFactory<>("to"));
+        columnTo.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+
+        tableEdges.getColumns().add(columnId);
+        tableEdges.getColumns().add(columnName);
+        tableEdges.getColumns().add(columnFrom);
+        tableEdges.getColumns().add(columnTo);
+        tableEdges.setItems(Model.edgesList);
     }
 
 }

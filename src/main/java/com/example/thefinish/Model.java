@@ -10,18 +10,18 @@ import java.util.TreeMap;
 public class Model {
     static ObservableMap<Integer, Node> nodes;
     static ObservableList<Node> nodesList;
+    static ObservableList<Edge> edgesList;
 
     static ObservableMap<Integer, Edge> edges;
     static ObservableMap<Integer, PathToNode> paths;
     static ArrayList<Edge> unvisited;
 
     static PathToNode tmpVoid(int fromId, int toId) {
-        edges = FXCollections.observableMap(new TreeMap<>());
-        addEdge(0, "Way", 0,2);
+        //addEdge(0, "Way", 0,2);
         edges.get(0).setWeight(6);
-        addEdge(1, "Way2", 2,1);
+        //addEdge(1, "Way2", 2,1);
         edges.get(1).setWeight(7);
-        addEdge(2, "Way3", 0,1);
+        //addEdge(2, "Way3", 0,1);
         edges.get(2).setWeight(100);
         return calculateRoute(fromId, toId);
     }
@@ -38,6 +38,13 @@ public class Model {
     static void addEdge(int id, String name, int fromId, int toId){
         Edge edge = new Edge(id, name, nodes.get(Integer.valueOf(fromId)), nodes.get(Integer.valueOf(toId)));
         edges.put(id, edge);
+        edgesList.add(edge);
+    }
+    static void addEdge(String name, int fromId, int toId){
+        int id = edges.keySet().size();
+        Edge edge = new Edge(id, name, nodes.get(Integer.valueOf(fromId)), nodes.get(Integer.valueOf(toId)));
+        edges.put(id, edge);
+        edgesList.add(edge);
     }
 
     static PathToNode calculateRoute(int fromId, int toId){
@@ -130,5 +137,7 @@ public class Model {
     static void setup(){
         nodes = FXCollections.observableMap(new TreeMap<>());
         nodesList = FXCollections.observableList(new ArrayList<>());
+        edges = FXCollections.observableMap(new TreeMap<>());
+        edgesList = FXCollections.observableList(new ArrayList<>());
     }
 }

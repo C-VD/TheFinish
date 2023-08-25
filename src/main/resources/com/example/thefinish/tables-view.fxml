@@ -9,7 +9,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="752.0" prefWidth="1075.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.thefinish.HelloController">
    <children>
-      <TableView layoutX="558.0" layoutY="122.0" prefHeight="320.0" prefWidth="452.0" />
+      <TableView fx:id="tableEdges" layoutX="558.0" layoutY="122.0" prefHeight="320.0" prefWidth="452.0" />
       <TableView fx:id="tableNodes" layoutX="84.0" layoutY="122.0" prefHeight="320.0" prefWidth="436.0" />
       <Label layoutX="84.0" layoutY="72.0" prefHeight="39.0" prefWidth="436.0" text="Узлы">
          <font>
@@ -21,10 +21,10 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <TextField layoutX="558.0" layoutY="506.0" prefHeight="26.0" prefWidth="98.0" text="2" />
-      <TextField layoutX="656.0" layoutY="506.0" prefHeight="26.0" prefWidth="86.0" text="3" />
-      <TextField layoutX="742.0" layoutY="506.0" prefHeight="26.0" prefWidth="86.0" text="4" />
-      <TextField layoutX="558.0" layoutY="568.0" prefHeight="26.0" prefWidth="270.0" />
+      <TextField fx:id="txtNewEdgeName" layoutX="558.0" layoutY="506.0" prefHeight="26.0" prefWidth="98.0" />
+      <TextField fx:id="txtNewEdgeFrom" layoutX="656.0" layoutY="506.0" prefHeight="26.0" prefWidth="86.0" />
+      <TextField fx:id="txtNewEdgeTo" layoutX="742.0" layoutY="506.0" prefHeight="26.0" prefWidth="86.0" />
+      <TextField fx:id="txtNewEdgeCost" layoutX="558.0" layoutY="568.0" prefHeight="26.0" prefWidth="270.0" />
       <Label layoutX="560.0" layoutY="459.0" text="Добавить">
          <font>
             <Font size="18.0" />
@@ -42,7 +42,7 @@
       </Label>
       <Label layoutX="84.0" layoutY="484.0" text="Название:" />
       <Button onAction="#onAddNodeBtnClick" layoutX="437.0" layoutY="506.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="78.0" text="Добавить" />
-      <Button layoutX="872.0" layoutY="531.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="132.0" text="Добавить" />
+      <Button onAction="#onAddEdgeBtnClick" layoutX="872.0" layoutY="531.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="132.0" text="Добавить" />
       <Label layoutX="76.0" layoutY="602.0" text="Построить маршрут">
          <font>
             <Font size="18.0" />
