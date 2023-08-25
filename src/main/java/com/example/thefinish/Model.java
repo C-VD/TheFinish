@@ -5,6 +5,7 @@ import javafx.collections.ObservableMap;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.TreeMap;
 
 public class Model {
@@ -12,7 +13,7 @@ public class Model {
     static ObservableMap<Integer, Edge> edges;
     static ObservableMap<Integer, PathToNode> paths;
     static ArrayList<Edge> unvisited;
-    static PathToNode tmpVoid(){
+    static PathToNode tmpVoid(int fromId, int toId){
         nodes = FXCollections.observableMap(new TreeMap<>());
         addNode(0, "foo");
         addNode(1, "bar");
@@ -24,7 +25,7 @@ public class Model {
         edges.get(1).setWeight(7);
         addEdge(2, "Way3", 0,1);
         edges.get(2).setWeight(100);
-        return calculateRoute(0,1);
+        return calculateRoute(fromId, toId);
     }
     static void addNode(int id, String name){
         Node node = new Node(id, name);
@@ -38,12 +39,8 @@ public class Model {
     static PathToNode calculateRoute(int fromId, int toId){
         paths = FXCollections.observableMap(new TreeMap<>());
         unvisited = new ArrayList<>();
-        int nNodes = 0;
-        for (Integer n :
-                nodes.keySet()) {
-            PathToNode path = new PathToNode(n);
-            nNodes++;
-        }
+        int nNodes = nodes.keySet().size();
+
         for (int id :
                 edges.keySet()) {
             unvisited.add(edges.get(id));
@@ -52,12 +49,12 @@ public class Model {
         PathToNode stub = new PathToNode(fromId);
         paths.put(fromId, stub);
 
-        ArrayList<Node> neighbors = getNeighbors(matrix, fromId);
+        getNeighbors(matrix, fromId);
         System.out.println("------------TMP----------------");
-        for (Edge e : paths.get(1).getPath()) {
+        for (Edge e : paths.get(toId).getPath()) {
             System.out.println("Name: " + e.getName() + " From: " + e.getFrom().getId() + " To: " + e.getTo().getId());
         }
-        System.out.println("Cost: " + paths.get(1).getCost());
+        System.out.println("Cost: " + paths.get(toId).getCost());
 
         PathToNode pathToNode = paths.get(toId);
         return pathToNode;
@@ -95,18 +92,24 @@ public class Model {
                 PathToNode p = paths.get(Integer.valueOf(i));
                 System.out.println("P: " + p.getCost() + " E: " + e.getWeight());
                 if (p.getCost() > paths.get(id).getCost() + e.getWeight()) {
-                    ArrayList<Edge> newPath = paths.get(id).getPath();
+                    ArrayList<Edge> newPath = cloneList(paths.get(id).getPath());
                     newPath.add(e);
                     p.setPath(newPath);
+                    System.out.println("UPDATE PATH: " + i + " COST: " + p.getCost());
                 }
             }
             else {
+                System.out.println("NEW PATH: ID = " + i);
                 PathToNode p = new PathToNode(Integer.valueOf(i));
                 p.getPath().clear();
                 p.getPath().add(e);
                 paths.put(i, p);
+                System.out.println("COST: " + p.getCost());
             }
+ //           System.out.println("PATH TO: " + 2 + " COST: " + paths.get(2).getCost());
+
         }
+
         for (int i = 0; i < unvisited.size(); i++) {
             if (unvisited.get(i).getFrom().getId() == id){
                 System.out.println("Checking " + unvisited.get(i).getName());
@@ -118,4 +121,11 @@ public class Model {
         }
         return neighbors;
     }
+
+    public static ArrayList<Edge> cloneList(ArrayList<Edge> list) {
+        ArrayList<Edge> clone = new ArrayList<Edge>(list.size());
+        for (Edge item : list) clone.add(item);
+        return clone;
+    }
+
 }
